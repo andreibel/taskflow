@@ -12,13 +12,14 @@ import java.util.UUID;
 public record UserDto(UUID id,
                       String email,
                       String firstName,
-                      String avatarUrl,
                       String lastName,
+                      String avatarUrl,
                       SystemRole systemRole,
                       boolean isActive,
                       boolean isEmailVerified,
-                      Instant lastLoginAt, UUID
-                      currentOrgId,
+                      Instant lastLoginAt,
+                      UUID currentOrgId,
                       String locale,
-                      Instant createdAt) implements Serializable {
+                      Instant createdAt,
+                      String timezone) implements Serializable {
 }
