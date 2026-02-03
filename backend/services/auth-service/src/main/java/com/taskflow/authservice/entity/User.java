@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -29,16 +30,16 @@ public class User {
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false, unique = true)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "first_name", nullable = false, unique = true)
+    @Column(name = "first_name", nullable = false,length = 100)
     private String firstName;
 
-    @Column(name = "avatar_url", nullable = false, unique = true)
+    @Column(name = "avatar_url",length = 500)
     private String avatarUrl;
 
-    @Column(name = "last_name", nullable = false, unique = true)
+    @Column(name = "last_name", nullable = false,length = 100)
     private String lastName;
 
     @Enumerated(EnumType.STRING)
@@ -48,14 +49,15 @@ public class User {
 
     @Column(name = "is_active", nullable = false)
     @Builder.Default
-    private boolean isActive = false;
+    private boolean isActive = true;
 
     @Column(name = "is_email_verified", nullable = false)
     @Builder.Default
     private boolean isEmailVerified = false;
 
+
     @Column(name = "last_login_at")
-    private Integer lastLoginAt;
+    private Instant lastLoginAt;
 
     @Column(name = "current_org_id")
     private UUID currentOrgId;
@@ -70,11 +72,11 @@ public class User {
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
-    private Integer createdAt;
+    private Instant createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
-    private Integer updatedAt;
+    private Instant updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

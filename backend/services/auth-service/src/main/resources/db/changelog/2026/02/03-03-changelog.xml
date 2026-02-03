@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd">
+
+    <!-- Drop incorrect unique constraints on users table -->
+    <changeSet id="fix-users-constraints-1" author="taskflow">
+        <dropUniqueConstraint tableName="users" constraintName="UC_USERS_PASSWORD"/>
+    </changeSet>
+
+    <changeSet id="fix-users-constraints-2" author="taskflow">
+        <dropUniqueConstraint tableName="users" constraintName="UC_USERS_FIRST_NAME"/>
+    </changeSet>
+
+    <changeSet id="fix-users-constraints-3" author="taskflow">
+        <dropUniqueConstraint tableName="users" constraintName="UC_USERS_LAST_NAME"/>
+    </changeSet>
+
+    <changeSet id="fix-users-constraints-4" author="taskflow">
+        <dropUniqueConstraint tableName="users" constraintName="UC_USERS_AVATAR_URL"/>
+    </changeSet>
+
+    <!-- Fix refresh_tokens.created_at type from INT to TIMESTAMP -->
+    <changeSet id="fix-refresh-tokens-created-at" author="taskflow">
+        <dropColumn tableName="refresh_tokens" columnName="created_at"/>
+        <addColumn tableName="refresh_tokens">
+            <column name="created_at" type="timestamp with time zone" defaultValueComputed="NOW()">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <!-- Add missing indexes on refresh_tokens -->
+    <changeSet id="add-refresh-tokens-indexes" author="taskflow">
+        <createIndex tableName="refresh_tokens" indexName="idx_refresh_tokens_user_id">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="refresh_tokens" indexName="idx_refresh_tokens_expires_at">
+            <column name="expires_at"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
