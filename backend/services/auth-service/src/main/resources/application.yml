@@ -22,7 +22,7 @@ server:
     context-path: /api/auth
 
 jwt:
-  secret: ${JWT_SECRET:my-super-secret-key-that-is-at-least-256-bits-long-for-hmac-sha}
+  secret: ${JWT_SECRET:2UuAEkDQAAo42fcJhErdyI9L8TlN5t+Lm6C1DjAOzh0=}
   access-token-expiration: ${JWT_ACCESS_EXPIRATION:900000}
   refresh-token-expiration: ${JWT_REFRESH_EXPIRATION:604800000}
 

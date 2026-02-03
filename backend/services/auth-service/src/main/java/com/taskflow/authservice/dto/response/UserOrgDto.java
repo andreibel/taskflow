@@ -7,7 +7,7 @@ public record UserOrgDto(
         UUID orgId,
         String orgName,
         String orgSlug,
-        String userRole,
+        String orgRole,
         String orgUrl
 ) implements Serializable {
 }

@@ -5,49 +5,93 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-5.0.xsd"
         objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
-    <changeSet id="1770131175431-1" author="andreibeloziorove (generated)">
-        <dropForeignKeyConstraint baseTableName="users_refresh_tokens" constraintName="fk_usereftok_on_refresh_token"/>
-    </changeSet>
-    <changeSet id="1770131175431-2" author="andreibeloziorove (generated)">
-        <dropForeignKeyConstraint baseTableName="users_refresh_tokens" constraintName="fk_usereftok_on_user"/>
-    </changeSet>
-    <changeSet id="1770131175431-8" author="andreibeloziorove (generated)">
-        <dropTable cascadeConstraints="true" tableName="users_refresh_tokens"/>
-    </changeSet>
-    <changeSet id="1770131175431-9" author="andreibeloziorove (generated)">
-        <modifyDataType columnName="avatar_url" newDataType="VARCHAR(500)" tableName="users"/>
-    </changeSet>
-    <changeSet id="1770131175431-10" author="andreibeloziorove (generated)">
-        <dropColumn columnName="created_at" tableName="users"/>
-
-        <dropColumn columnName="last_login_at" tableName="users"/>
-
-        <dropColumn columnName="updated_at" tableName="users"/>
-    </changeSet>
-    <changeSet id="1770131175431-11" author="andreibeloziorove (generated)">
-        <addColumn tableName="users">
-            <column name="created_at" type="timestamp with time zone">
-                <constraints nullable="false" validateNullable="true"/>
+    <changeSet id="1770136716730-1" author="andreibeloziorove (generated)">
+        <createTable tableName="refresh_tokens">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_refresh_tokens"/>
             </column>
-        </addColumn>
+            <column name="token" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_info" type="VARCHAR(255)"/>
+            <column name="ip_address" type="VARCHAR(45)"/>
+            <column name="expires_at" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revoked" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
-    <changeSet id="1770131175431-12" author="andreibeloziorove (generated)">
-        <modifyDataType columnName="first_name" newDataType="VARCHAR(100)" tableName="users"/>
-    </changeSet>
-    <changeSet id="1770131175431-13" author="andreibeloziorove (generated)">
-        <addColumn tableName="users">
+    <changeSet id="1770136716730-2" author="andreibeloziorove (generated)">
+        <createTable tableName="users">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="avatar_url" type="VARCHAR(500)"/>
+            <column name="last_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="system_role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_email_verified" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="last_login_at" type="timestamp with time zone"/>
-        </addColumn>
-    </changeSet>
-    <changeSet id="1770131175431-14" author="andreibeloziorove (generated)">
-        <modifyDataType columnName="last_name" newDataType="VARCHAR(100)" tableName="users"/>
-    </changeSet>
-    <changeSet id="1770131175431-15" author="andreibeloziorove (generated)">
-        <addColumn tableName="users">
-            <column name="updated_at" type="timestamp with time zone">
-                <constraints nullable="false" validateNullable="true"/>
+            <column name="current_org_id" type="UUID"/>
+            <column name="timezone" type="VARCHAR(50)">
+                <constraints nullable="false"/>
             </column>
-        </addColumn>
+            <column name="locale" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1770136716730-3" author="andreibeloziorove (generated)">
+        <addUniqueConstraint columnNames="token" constraintName="UC_REFRESH_TOKENS_TOKEN" tableName="refresh_tokens"/>
+    </changeSet>
+    <changeSet id="1770136716730-4" author="andreibeloziorove (generated)">
+        <addUniqueConstraint columnNames="email" constraintName="UC_USERS_EMAIL" tableName="users"/>
+    </changeSet>
+    <changeSet id="1770136716730-5" author="andreibeloziorove (generated)">
+        <createIndex indexName="idx_users_current_org_id" tableName="users">
+            <column name="current_org_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1770136716730-6" author="andreibeloziorove (generated)">
+        <createIndex indexName="idx_users_is_active" tableName="users">
+            <column name="is_active"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="1770136716730-7" author="andreibeloziorove (generated)">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="refresh_tokens"
+                                 constraintName="FK_REFRESH_TOKENS_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
     </changeSet>
 
 </databaseChangeLog>
